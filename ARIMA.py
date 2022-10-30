@@ -1,4 +1,3 @@
-import stat
 import statistics as stat
 import pandas as pd
 import numpy as np
@@ -7,10 +6,13 @@ import datetime as dt
 import pandas_datareader as web
 import matplotlib.pyplot as plt
 
-arr = list(web.DataReader("BTC-AUD", "yahoo", "2012-1-1", dt.datetime.now())['Close'].values)
+stock = "ETH-AUD"
+daysofprediction = 500
+
+arr = list(web.DataReader(stock, "yahoo", "2012-1-1", dt.datetime.now())['Close'].values)
 
 window_size = 3
-data = web.DataReader("BTC-AUD", "yahoo", "2012-1-1", dt.datetime.now())['Close']
+data = web.DataReader(stock, "yahoo", "2012-1-1", dt.datetime.now())['Close']
 numbers_series = pd.Series(arr)
 windows = numbers_series.rolling(window_size)
 
@@ -26,7 +28,7 @@ for i in range(0, len(moving_averages)-1):
 meandifference = stat.mean(differences)
 predictions = []
 
-for i in range(0, 500):
+for i in range(0, daysofprediction):
     newma = (moving_averages[len(moving_averages)-1]+meandifference)
     prediction = newma*3-arr[len(arr)-1]-arr[len(arr)-2]
     predictions.append(prediction)
@@ -34,11 +36,14 @@ for i in range(0, 500):
 
 predictiondates = []
 
-for i in range(0, 500):
+for i in range(0, daysofprediction):
     date = dt.datetime.now()+dt.timedelta(days=i)
     predictiondates.append(date)
 
 plt.plot(data, label="actual stocks")
 plt.plot(predictiondates, predictions, label="Predictions")
+plt.xlabel("Time")
+plt.ylabel("Price")
+plt.title(f"{stock} Price Prediction")
 plt.legend()
 plt.show()
