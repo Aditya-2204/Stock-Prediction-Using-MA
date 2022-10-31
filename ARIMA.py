@@ -40,7 +40,6 @@ for i in range(0, daysofprediction):
     date = dt.datetime.now()+dt.timedelta(days=i)
     predictiondates.append(date)
 
-rate = predictions[len(predictions)-1]-predictions[0]/predictiondates[len(predictiondates)-1]-predictiondates[0]
 
 if predictions[len(predictions)-1]>predictions[0]:
     plt.plot(data, label="actual stocks")
