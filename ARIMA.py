@@ -6,7 +6,7 @@ import datetime as dt
 import pandas_datareader as web
 import matplotlib.pyplot as plt
 
-stock = "ETH-AUD"
+stock = "DOGE-AUD"
 daysofprediction = 500
 
 arr = list(web.DataReader(stock, "yahoo", "2012-1-1", dt.datetime.now())['Close'].values)
@@ -40,10 +40,29 @@ for i in range(0, daysofprediction):
     date = dt.datetime.now()+dt.timedelta(days=i)
     predictiondates.append(date)
 
-plt.plot(data, label="actual stocks")
-plt.plot(predictiondates, predictions, label="Predictions")
-plt.xlabel("Time")
-plt.ylabel("Price")
-plt.title(f"{stock} Price Prediction")
-plt.legend()
-plt.show()
+rate = predictions[len(predictions)-1]-predictions[0]/predictiondates[len(predictiondates)-1]-predictiondates[0]
+
+if predictions[len(predictions)-1]>predictions[0]:
+    plt.plot(data, label="actual stocks")
+    plt.plot(predictiondates, predictions, label="Predictions", color="green")
+    plt.xlabel("Time")
+    plt.ylabel("Price")
+    plt.title(f"{stock} Price Prediction")
+    plt.legend()
+    plt.show()
+if predictions[len(predictions)-1]<predictions[0]:
+    plt.plot(data, label="actual stocks")
+    plt.plot(predictiondates, predictions, label="Predictions", color="red")
+    plt.xlabel("Time")
+    plt.ylabel("Price")
+    plt.title(f"{stock} Price Prediction")
+    plt.legend()
+    plt.show()
+if predictions[len(predictions)-1]==predictions[0]:
+    plt.plot(data, label="actual stocks")
+    plt.plot(predictiondates, predictions, label="Predictions", color="black")
+    plt.xlabel("Time")
+    plt.ylabel("Price")
+    plt.title(f"{stock} Price Prediction")
+    plt.legend()
+    plt.show()
